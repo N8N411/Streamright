@@ -1,0 +1,20 @@
+{
+  "name": "streamrights-orchestrator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.30.1",
+    "@solana/web3.js": "^1.95.4",
+    "@streamrights/sdk": "file:../sdk"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.2"
+  }
+}

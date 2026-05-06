@@ -1,0 +1,16 @@
+{
+  "name": "streamrights",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "app",
+    "sdk",
+    "orchestrator"
+  ],
+  "scripts": {
+    "build": "npm run -w sdk build && npm run -w orchestrator build && npm run -w app build",
+    "dev": "npm run -w app dev",
+    "lint": "npm run -w app lint && npm run -w sdk lint && npm run -w orchestrator lint",
+    "test": "npm run -w sdk test"
+  }
+}
