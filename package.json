@@ -7,6 +7,10 @@
     "sdk",
     "orchestrator"
   ],
+  "overrides": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
   "scripts": {
     "build": "npm run -w sdk build && npm run -w orchestrator build && npm run -w app build",
     "dev": "npm run -w app dev",

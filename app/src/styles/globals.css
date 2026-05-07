@@ -179,6 +179,52 @@ a {
   font-size: 12px;
 }
 
+.sr-footer {
+  margin-top: 14px;
+  border: 1px solid rgba(169, 149, 255, 0.36);
+  border-radius: 12px;
+  background: rgba(16, 11, 39, 0.72);
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.sr-footer-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sr-footer-left svg {
+  width: 28px;
+  height: 22px;
+}
+
+.sr-footer-brand {
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-right: 4px;
+}
+
+.sr-footer a {
+  color: #d8cbff;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.sr-footer a:hover {
+  color: #fff;
+}
+
+.sr-footer-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .sr-card {
   background: rgba(11, 11, 17, 0.78);
   border: 1px solid rgba(117, 95, 224, 0.28);
