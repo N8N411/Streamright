@@ -1,5 +1,5 @@
 {
   "framework": "nextjs",
-  "installCommand": "npm install --legacy-peer-deps",
-  "buildCommand": "npm run build"
+  "installCommand": "npm install --legacy-peer-deps --workspaces=false",
+  "buildCommand": "./node_modules/.bin/next build"
 }
