@@ -3,12 +3,67 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import Head from "next/head";
 import type { ChangeEvent } from "react";
 import { useMemo, useState } from "react";
-import {
-  evaluatePolicyWithArcium,
-  toSetAccessStatusPayload,
-  type ArciumPolicyInput,
-  type ArciumEvaluationMode
-} from "@streamrights/sdk";
+
+type ArciumEvaluationMode = "local" | "network";
+
+type ArciumPolicyInput = {
+  assetId: string;
+  buyer: string;
+  requestNonce: string;
+  nowUnix: number;
+  priceLamports: bigint;
+  amountPaidLamports: bigint;
+  expiresAtUnix: number;
+  revoked: boolean;
+  usesSoFar: number;
+  maxUses: number;
+};
+
+type ArciumEvaluationResult = {
+  approved: boolean;
+  reasonCode: "OK" | "REVOKED" | "EXPIRED" | "INSUFFICIENT_PAYMENT" | "USAGE_LIMIT_REACHED";
+  authorizationId?: string;
+  updatedUses: number;
+};
+
+function evaluatePolicyWithArcium(input: ArciumPolicyInput, _mode: ArciumEvaluationMode): Promise<ArciumEvaluationResult> {
+  if (input.revoked) {
+    return Promise.resolve({ approved: false, reasonCode: "REVOKED", updatedUses: input.usesSoFar });
+  }
+  if (input.nowUnix >= input.expiresAtUnix) {
+    return Promise.resolve({ approved: false, reasonCode: "EXPIRED", updatedUses: input.usesSoFar });
+  }
+  if (input.amountPaidLamports < input.priceLamports) {
+    return Promise.resolve({
+      approved: false,
+      reasonCode: "INSUFFICIENT_PAYMENT",
+      updatedUses: input.usesSoFar
+    });
+  }
+  if (input.usesSoFar >= input.maxUses) {
+    return Promise.resolve({
+      approved: false,
+      reasonCode: "USAGE_LIMIT_REACHED",
+      updatedUses: input.usesSoFar
+    });
+  }
+  return Promise.resolve({
+    approved: true,
+    reasonCode: "OK",
+    authorizationId: `auth_${crypto.randomUUID().replace(/-/g, "").slice(0, 20)}`,
+    updatedUses: input.usesSoFar + 1
+  });
+}
+
+function toSetAccessStatusPayload(input: ArciumPolicyInput, result: ArciumEvaluationResult) {
+  return {
+    assetId: input.assetId,
+    buyer: input.buyer,
+    requestNonce: input.requestNonce,
+    approved: result.approved,
+    authorizationId: result.authorizationId
+  };
+}
 
 function ArciumMark() {
   return (
